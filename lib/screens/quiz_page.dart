@@ -1,4 +1,10 @@
+import 'dart:developer';
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz_app/models/question.dart';
+import 'package:flutter_quiz_app/widgets/loading_bar.dart';
+import 'package:flutter_quiz_app/widgets/question_widget.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({Key? key}) : super(key: key);
@@ -7,27 +13,16 @@ class QuizPage extends StatefulWidget {
   _QuizPageState createState() => _QuizPageState();
 }
 
-class _QuizPageState extends State<QuizPage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController animationController = AnimationController(
-    vsync: this,
-    duration: const Duration(seconds: 10),
-  );
-
-  @override
-  void initState() {
-    animationController.forward();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
+class _QuizPageState extends State<QuizPage> {
+  bool isTimeOut = false;
+  int answer = -1;
+  final key = GlobalKey<LoadingBarState>();
 
   @override
   Widget build(BuildContext context) {
+    bool isDone = isTimeOut == true || answer > -1;
+    Questions question = questions[0];
+
     return Scaffold(
       body: Stack(
         children: [
@@ -39,51 +34,93 @@ class _QuizPageState extends State<QuizPage>
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 children: [
-                  AnimatedBuilder(
-                    animation: animationController,
-                    builder: (context, child) => Stack(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(8),
+                  LoadingBar(
+                    key: key,
+                    onTimeOut: () {
+                      setState(() {
+                        isTimeOut = true;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(questions[0].question),
                           ),
-                        ),
-                        LayoutBuilder(
-                          builder: (context, constraints) => Container(
-                            width: constraints.maxWidth *
-                                animationController.value,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
+                          Expanded(
+                            flex: 8,
+                            child: Column(
+                              children: [
+                                Text(answer.toString()),
+                                ...question.options.map(
+                                  (
+                                    e,
+                                  ) {
+                                    int index = question.options.indexOf(e);
+
+                                    return questionWidget(
+                                      text:
+                                          "${String.fromCharCode(index + 65)}.   $e",
+                                      status: !isDone
+                                          ? null
+                                          : answer == -1 &&
+                                                  index == question.answer
+                                              ? true
+                                              : answer == -1 &&
+                                                      index != question.answer
+                                                  ? null
+                                                  : answer > -1 &&
+                                                          index ==
+                                                              question.answer
+                                                      ? true
+                                                      : answer > -1 &&
+                                                              index !=
+                                                                  question
+                                                                      .answer
+                                                          ? null
+                                                          : false,
+                                      onTap: () {
+                                        if (isDone) return;
+
+                                        key.currentState!.animationController
+                                            .stop();
+
+                                        setState(
+                                          () {
+                                            answer = index;
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                if (isDone)
+                                  OutlinedButton(
+                                    onPressed: () {},
+                                    child: const Text("Next"),
+                                  ),
+                              ],
                             ),
                           ),
-                        ),
-                        Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(
-                                "${(animationController.value * 10).round().toString()} seconds",
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: const Text("rest sssssart"),
-                  ),
+                  )
                 ],
               ),
             ),
