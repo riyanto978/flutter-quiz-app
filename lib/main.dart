@@ -13,18 +13,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => QuestionBloc(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: "/",
-        routes: {
-          // When navigating to the "/" route, build the FirstScreen widget.
-          '/': (context) => const MainPage(),
-          // When navigating to the "/second" route, build the SecondScreen widget.
-          '/quiz': (context) => const QuizPage(),
-        },
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: "/quiz",
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const MainPage(),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/quiz': (context) => const QuizPage(),
+      },
     );
   }
 }
