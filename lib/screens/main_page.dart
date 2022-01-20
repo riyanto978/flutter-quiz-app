@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz_app/screens/quiz_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -26,7 +27,14 @@ class _MainPageState extends State<MainPage> {
                 minimumSize: const Size(140, 50),
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed("/quiz");
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const QuizPage(
+                      rightAnswer: 0,
+                      questionIndex: 0,
+                    ),
+                  ),
+                );
               },
               child: const Text(
                 "Start",

@@ -22,7 +22,6 @@ Widget questionWidget({
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(text),
-              Text(status.toString()),
               if (status == null)
                 Container()
               else

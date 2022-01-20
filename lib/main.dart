@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quiz_app/bloc/question_bloc.dart';
+import 'package:flutter_quiz_app/screens/finish_page.dart';
 import 'package:flutter_quiz_app/screens/main_page.dart';
 import 'package:flutter_quiz_app/screens/quiz_page.dart';
 
@@ -15,13 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/quiz",
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const MainPage(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/quiz': (context) => const QuizPage(),
-      },
+      home: MainPage(),
     );
   }
 }
