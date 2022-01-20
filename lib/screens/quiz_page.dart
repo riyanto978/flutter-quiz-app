@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/models/question.dart';
 import 'package:flutter_quiz_app/screens/finish_page.dart';

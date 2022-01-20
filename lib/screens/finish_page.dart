@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/screens/main_page.dart';
-import 'package:flutter_quiz_app/screens/quiz_page.dart';
 
 class FinishPage extends StatefulWidget {
   final int rightAnswer;

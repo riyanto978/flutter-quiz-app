@@ -13,7 +13,7 @@ Widget questionWidget({
         onTap: onTap,
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey.shade300),
             borderRadius: BorderRadius.circular(8),
